@@ -67,7 +67,8 @@ export default class Calendar extends Component {
     today: PropTypes.any,
     weekStart: PropTypes.number,
     calendarFormat: PropTypes.string,
-    showTopBar: PropTypes.bool,
+    showTitle: PropTypes.bool,
+    titlePosition: PropTypes.string,
   };
 
   static defaultProps = {
@@ -86,7 +87,8 @@ export default class Calendar extends Component {
     titleFormat: 'MMMM YYYY',
     weekStart: 1,
     calendarFormat: 'monthly', // weekly or monthly
-    showTopBar: false
+    showTitle: true,
+    titlePosition: 'top',
   };
 
   componentDidMount() {
@@ -373,7 +375,7 @@ export default class Calendar extends Component {
         </View>
       );
     }
-    if (this.props.showTopBar) {
+    if (this.props.showTitle) {
       return (
         <View style={[styles.calendarControls, this.props.customStyle.calendarControls]}>
           <Text style={[styles.title, this.props.customStyle.title]}>
@@ -400,7 +402,7 @@ export default class Calendar extends Component {
 
     return (
       <View onLayout={this.onContainerLayout} style={containerStyle}>
-        {this.renderTopBar()}
+        {this.props.titlePosition === 'top' && this.renderTopBar()}
         {this.renderHeading(this.props.titleFormat)}
         {this.props.scrollEnabled ?
           <ScrollView
@@ -424,6 +426,7 @@ export default class Calendar extends Component {
             {calendarDates.map((date) => this.renderCalendarView(this.props.calendarFormat, moment(date), eventDatesMap))}
           </View>
         }
+        {this.props.titlePosition === 'bottom' && this.renderTopBar()}
       </View>
     );
   }
