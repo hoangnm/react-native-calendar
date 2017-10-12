@@ -14,6 +14,11 @@ import styles from './styles';
 
 const VIEW_INDEX = 2;
 
+const CALENDAR_TYPES = {
+  'weekly': 1,
+  'biweekly': 2
+};
+
 function getNumberOfWeeks(month, weekStart) {
   const firstDay = moment(month).startOf('month').day();
   const offset = (firstDay - weekStart + 7) % 7;
@@ -60,7 +65,8 @@ export default class Calendar extends Component {
     titleFormat: PropTypes.string,
     today: PropTypes.any,
     weekStart: PropTypes.number,
-    calendarFormat: PropTypes.string
+    calendarFormat: PropTypes.string,
+    showTopBar: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -78,7 +84,8 @@ export default class Calendar extends Component {
     startDate: moment().format('YYYY-MM-DD'),
     titleFormat: 'MMMM YYYY',
     weekStart: 1,
-    calendarFormat: 'monthly' // weekly or monthly
+    calendarFormat: 'monthly', // weekly or monthly
+    showTopBar: false
   };
 
   componentDidMount() {
@@ -108,7 +115,7 @@ export default class Calendar extends Component {
         if (this.props.calendarFormat === 'monthly') {
           res.push(moment(currentMoment).add(i, 'month'));
         } else {
-          res.push(moment(currentMoment).add(i, 'week'));
+          res.push(moment(currentMoment).add(i * CALENDAR_TYPES[this.props.calendarFormat], 'week'));
         }
       }
       return res;
@@ -152,7 +159,7 @@ export default class Calendar extends Component {
   onPrev = () => {
     const newMoment = this.props.calendarFormat === 'monthly' ?
       moment(this.state.currentMoment).subtract(1, 'month') :
-      moment(this.state.currentMoment).subtract(1, 'week');
+      moment(this.state.currentMoment).subtract(1 * CALENDAR_TYPES[this.props.calendarFormat], 'week');
     this.setState({ currentMoment: newMoment });
     this.props.onTouchPrev && this.props.onTouchPrev(newMoment);
   }
@@ -160,7 +167,7 @@ export default class Calendar extends Component {
   onNext = () => {
     const newMoment = this.props.calendarFormat === 'monthly' ?
       moment(this.state.currentMoment).add(1, 'month') :
-      moment(this.state.currentMoment).add(1, 'week');
+      moment(this.state.currentMoment).add(1 * CALENDAR_TYPES[this.props.calendarFormat], 'week');
     this.setState({ currentMoment: newMoment });
     this.props.onTouchNext && this.props.onTouchNext(newMoment);
   }
@@ -185,7 +192,7 @@ export default class Calendar extends Component {
     const currentPage = position / containerWidth;
     const newMoment = this.props.calendarFormat === 'monthly' ?
       moment(this.state.currentMoment).add(currentPage - VIEW_INDEX, 'month') :
-      moment(this.state.currentMoment).add(currentPage - VIEW_INDEX, 'week');
+      moment(this.state.currentMoment).add((currentPage - VIEW_INDEX) * CALENDAR_TYPES[this.props.calendarFormat], 'week');
 
     this.setState({ currentMoment: newMoment });
 
@@ -239,7 +246,7 @@ export default class Calendar extends Component {
       weekStart = this.props.weekStart,
       todayMoment = moment(this.props.today),
       todayIndex = todayMoment.date() - 1,
-      argDaysCount = calFormat === 'monthly' ? argMoment.daysInMonth() : 7,
+      argDaysCount = calFormat === 'monthly' ? argMoment.daysInMonth() : 7 * CALENDAR_TYPES[this.props.calendarFormat],
       offset = calFormat === 'monthly' ?
         (startOfArgMoment.isoWeekday() - weekStart + 7) % 7 : 0,
       selectedIndex = moment(selectedMoment).date() - 1;
@@ -338,8 +345,8 @@ export default class Calendar extends Component {
 
   renderTopBar() {
     let localizedMonth = this.props.monthNames[this.state.currentMoment.month()];
-    return this.props.showControls
-      ? (
+    if (this.props.showControls) {
+      return (
         <View style={[styles.calendarControls, this.props.customStyle.calendarControls]}>
           <TouchableOpacity
             style={[styles.controlButton, this.props.customStyle.controlButton]}
@@ -363,14 +370,18 @@ export default class Calendar extends Component {
             </Text>
           </TouchableOpacity>
         </View>
-      )
-      : (
+      );
+    }
+    if (this.props.showTopBar) {
+      return (
         <View style={[styles.calendarControls, this.props.customStyle.calendarControls]}>
           <Text style={[styles.title, this.props.customStyle.title]}>
             {this.state.currentMoment.format(this.props.titleFormat)}
           </Text>
         </View>
       );
+    }
+    return null;
   }
 
   render() {
@@ -383,7 +394,7 @@ export default class Calendar extends Component {
     }
     const calendarDates = this.getStack(this.state.currentMoment);
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
-    const numOfWeeks = this.props.calendarFormat === 'weekly' ? 1 :
+    const numOfWeeks = this.props.calendarFormat !== 'monthly' ? (1 * CALENDAR_TYPES[this.props.calendarFormat]) :
       getNumberOfWeeks(this.state.currentMoment, this.props.weekStart);
 
     return (
