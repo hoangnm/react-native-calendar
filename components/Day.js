@@ -20,7 +20,7 @@ export default class Day extends Component {
     caption: PropTypes.any,
     customStyle: PropTypes.object,
     filler: PropTypes.bool,
-    event: PropTypes.object,
+    event: PropTypes.array,
     isSelected: PropTypes.bool,
     isToday: PropTypes.bool,
     isWeekend: PropTypes.bool,
@@ -122,14 +122,19 @@ export default class Day extends Component {
             <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, event)}>
               <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, event)}>{caption}</Text>
             </View>
-            {showEventIndicators &&
-            <View style={[
-              styles.eventIndicatorFiller,
-              customStyle.eventIndicatorFiller,
-              event && styles.eventIndicator,
-              event && customStyle.eventIndicator,
-              event && event.eventIndicator]}
-            />
+            {(showEventIndicators && event) && 
+            event.map((e, i) => {
+              return (
+                <View key={i} style={[
+                  styles.eventIndicatorFiller,
+                  customStyle.eventIndicatorFiller,
+                  styles.eventIndicator,
+                  customStyle.eventIndicator,
+                  e.eventIndicator,
+                  e.color && { backgroundColor: e.color }]}
+                />
+              );
+            })
             }
           </View>
         </TouchableOpacity>

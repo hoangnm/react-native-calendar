@@ -132,7 +132,11 @@ export default class Calendar extends Component {
     if (events) {
       events.forEach(event => {
         if (event.date) {
-          parsedDates[event.date] = event;
+          if (parsedDates[event.date]) {
+            parsedDates[event.date].push(event)
+          } else {
+            parsedDates[event.date] = [event];
+          }
         }
       });
     } else {
@@ -285,9 +289,19 @@ export default class Calendar extends Component {
       } else {
         days.push(
           this.renderDay({
+            startOfMonth: startOfArgMoment,
+            isWeekend: isoWeekday === 0 || isoWeekday === 6,
             key: renderIndex,
-            filler: true,
-            customStyle: this.props.customStyle,
+            onPress: () => {},
+            onLongPress: () => {},
+            caption: thisMoment.format('D'),
+            isToday: false,
+            isSelected: false,
+            event: [],
+            showEventIndicators: false,
+            customStyle: { ...this.props.customStyle, day: { color: 'grey' }, weekendDayText: {
+              color: 'grey',
+            } },
           })
         );
       }
