@@ -87,7 +87,7 @@ export default class Calendar extends Component {
     titleFormat: 'MMMM YYYY',
     weekStart: 1,
     calendarFormat: 'monthly', // weekly or monthly
-    showTitle: true,
+    showTitle: false,
     titlePosition: 'top',
   };
 
