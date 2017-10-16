@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import {
   Text,
   TouchableOpacity,
@@ -8,6 +7,7 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 import styles from './styles';
 
