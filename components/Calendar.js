@@ -141,7 +141,7 @@ export default class Calendar extends Component {
       });
     } else {
       eventDates.forEach(event => {
-        parsedDates[event] = {};
+        parsedDates[event] = [{}];
       });
     }
 
