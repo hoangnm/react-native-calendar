@@ -436,7 +436,7 @@ export default class Calendar extends Component {
             {calendarDates.map((date) => this.renderCalendarView(this.props.calendarFormat, moment(date), eventDatesMap))}
           </ScrollView>
           :
-          <View ref={calendar => this._calendar = calendar}>
+          <View style={{ flex: 1 }} ref={calendar => this._calendar = calendar}>
             {calendarDates.map((date) => this.renderCalendarView(this.props.calendarFormat, moment(date), eventDatesMap))}
           </View>
         }
