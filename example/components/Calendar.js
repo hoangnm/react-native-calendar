@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Dimensions,
   ScrollView,
@@ -6,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Day from './Day';
 
@@ -62,7 +62,6 @@ export default class Calendar extends Component {
     selectedDate: PropTypes.any,
     showControls: PropTypes.bool,
     showEventIndicators: PropTypes.bool,
-    showFillerDay: PropTypes.bool,
     startDate: PropTypes.any,
     titleFormat: PropTypes.string,
     today: PropTypes.any,
@@ -84,7 +83,6 @@ export default class Calendar extends Component {
     scrollEnabled: false,
     showControls: false,
     showEventIndicators: false,
-    showFillerDay: false,
     startDate: moment().format('YYYY-MM-DD'),
     titleFormat: 'MMMM YYYY',
     weekStart: 1,
@@ -289,6 +287,28 @@ export default class Calendar extends Component {
           })
         ));
       } else {
+        // days.push(
+        //   this.renderDay({
+        //     startOfMonth: startOfArgMoment,
+        //     isWeekend: isoWeekday === 0 || isoWeekday === 6,
+        //     key: renderIndex,
+        //     onPress: () => {
+        //       this.selectDate(thisMoment);
+        //       this.props.onDateSelect && this.props.onDateSelect(thisMoment ? thisMoment.format() : null);
+        //     },
+        //     onLongPress: () => {
+        //       this.selectDate(thisMoment);
+        //       this.props.onDateLongPress && this.props.onDateLongPress(thisMoment ? thisMoment.format() : null);
+        //     },
+        //     caption: thisMoment.format('D'),
+        //     isToday: false,
+        //     isSelected: false,
+        //     event: [],
+        //     showEventIndicators: false,
+        //     customStyle: { ...this.props.customStyle, day: { color: 'grey' }, weekendDayText: {
+        //       color: 'grey',
+        //     } },
+        //   })
         days.push(
           this.renderDay({
             key: renderIndex,
@@ -297,7 +317,7 @@ export default class Calendar extends Component {
             caption: thisMoment.format('D'),
             showFillerDay: this.props.showFillerDay,
           })
-        );
+      );
       }
       if (renderIndex % 7 === 6) {
         weekRows.push(
@@ -407,7 +427,6 @@ export default class Calendar extends Component {
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
     const numOfWeeks = this.props.calendarFormat !== 'monthly' ? (1 * CALENDAR_TYPES[this.props.calendarFormat]) :
       getNumberOfWeeks(this.state.currentMoment, this.props.weekStart);
-
     return (
       <View onLayout={this.onContainerLayout} style={containerStyle}>
         {this.props.titlePosition === 'top' && this.renderTopBar()}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -7,7 +7,6 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import PropTypes from 'prop-types';
 
 import styles from './styles';
 
@@ -27,7 +26,6 @@ export default class Day extends Component {
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
     showEventIndicators: PropTypes.bool,
-    showFillerDay: PropTypes.bool,
   }
 
   dayCircleStyle = (isWeekend, isSelected, isToday, event) => {
@@ -115,7 +113,9 @@ export default class Day extends Component {
       ? (
         <TouchableWithoutFeedback>
           <View style={dayButtonFillerStyle}>
-            {showFillerDay && <Text style={[styles.day, styles.fillerDay, customStyle.fillerDay]} />}
+            {showFillerDay && <Text style={[styles.day, styles.fillerDay, customStyle.fillerDay]}>
+              {caption}
+            </Text>}
           </View>
         </TouchableWithoutFeedback>
       )

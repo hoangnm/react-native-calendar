@@ -5,7 +5,8 @@ import {
   View,
 } from 'react-native';
 
-import Calendar from 'react-native-calendar';
+import Calendar from './components/Calendar';
+// import Calendar from 'react-native-calendar';
 import moment from 'moment';
 
 const customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -32,12 +33,68 @@ const styles = StyleSheet.create({
 
 // use to test customStyles
 const customStyles = StyleSheet.create({
-  dayButton: {
-    padding: 10,
-  },
-  dayButtonFiller: {
-    padding: 10,
-  },
+  // calendarContainer: {
+  //   // backgroundColor: '#fff',
+  //   // flex: 1,
+  // },
+  // monthContainer: {
+  //   // flex: 1,
+  // },
+  // weekRow: {
+  //   // flex: 1,
+  // },
+  // dayButton: {
+  //   // borderTopWidth: 0,
+  // },
+  // dayButtonFiller: {
+  //   padding: 10,
+  // },
+  // fillerDay: {
+  //   // color: 'grey',
+  // },
+  // title: {
+  //   // color: '#fff',
+  //   textAlign: 'center',
+  // },
+  // calendarControls: {
+  //   alignItems: 'center',
+  // },
+  // day: {
+  //   color: 'black',
+  // },
+  // dayHeading: {
+  //   // color: '#fff',
+  // },
+  // weekendDayText: {
+  //   color: 'black',
+  // },
+  // weekendHeading: {
+  //   // color: '#fff',
+  // },
+  // weekendDayButton: {
+  //   // backgroundColor: 'red',
+  // },
+  // calendarHeading: {
+  //   borderTopWidth: 0,
+  //   borderBottomWidth: 0,
+  // },
+  // selectedDayCircle: {
+  //   // backgroundColor: '#fff',
+  // },
+  // selectedDayText: {
+  //   // color: 'red',
+  // },
+  // currentDayText: {
+  //   color: 'blue',
+  // },
+  // currentDayCircle: {
+  //   // backgroundColor: '#fff',
+  // },
+  // eventIndicator: {
+  //   backgroundColor: 'blue',
+  //   width: 30,
+  //   height: 5,
+  // },
 });
 
 class App extends Component {
@@ -49,31 +106,34 @@ class App extends Component {
   }
 
   render() {
-    let eventDates = [moment().format('YYYY-MM-DD'), moment().add(1, "day").format('YYYY-MM-DD'),
-      moment().add(14, "day").format('YYYY-MM-DD'), moment().add(1, "month").format('YYYY-MM-DD')];
-
+    let events = [
+    ];
     return (
       <View style={styles.container}>
         <Calendar
+          showTitle
+          showFillerDay
+          showEventIndicators
+          customStyle={customStyles}
           ref="calendar"
-          eventDates={eventDates}
+          titlePosition={'top'}
           scrollEnabled
-          showControls
+          showControls={false}
           dayHeadings={customDayHeadings}
           monthNames={customMonthNames}
           titleFormat={'MMMM YYYY'}
           prevButtonText={'Prev'}
           nextButtonText={'Next'}
+          calendarFormat={'monthly'}
           onDateSelect={(date) => this.setState({ selectedDate: date })}
           onDateLongPress={(date) => this.setState({ selectedDate: date })}
           onTouchPrev={(e) => console.log('onTouchPrev: ', e)}
           onTouchNext={(e) => console.log('onTouchNext: ', e)}
           onSwipePrev={(e) => console.log('onSwipePrev: ', e)}
           onSwipeNext={(e) => console.log('onSwipeNext', e)}
-          selectedDate={this.state.selectedDate}
-          showEventIndicators={true}
+          events={events}
         />
-        <Text>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text>
+        {/* <Text>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text> */}
       </View>
 
     );
