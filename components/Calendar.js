@@ -194,22 +194,24 @@ export default class Calendar extends Component {
 
   scrollEnded(event) {
     const containerWidth = this.state.containerWidth;
-    if (containerWidth == null) {
-        return;
-    }
     const position = event.nativeEvent.contentOffset.x;
-    const currentPage = position / containerWidth;
-    const newMoment = this.props.calendarFormat === 'monthly' ?
-      moment(this.state.currentMoment).add(currentPage - VIEW_INDEX, 'month') :
-      moment(this.state.currentMoment).add((currentPage - VIEW_INDEX) * CALENDAR_TYPES[this.props.calendarFormat], 'week');
-
-    this.setState({ currentMoment: newMoment });
-
-    if (currentPage < VIEW_INDEX) {
-      this.props.onSwipePrev && this.props.onSwipePrev(newMoment);
-    } else if (currentPage > VIEW_INDEX) {
-      this.props.onSwipeNext && this.props.onSwipeNext(newMoment);
-    }
+    setTimeout(() => {
+      if (containerWidth == null) {
+        return;
+      }
+      const currentPage = position / containerWidth;
+      const newMoment = this.props.calendarFormat === 'monthly' ?
+        moment(this.state.currentMoment).add(currentPage - VIEW_INDEX, 'month') :
+        moment(this.state.currentMoment).add((currentPage - VIEW_INDEX) * CALENDAR_TYPES[this.props.calendarFormat], 'week');
+      
+      this.setState({ currentMoment: newMoment });
+      
+      if (currentPage < VIEW_INDEX) {
+        this.props.onSwipePrev && this.props.onSwipePrev(newMoment);
+      } else if (currentPage > VIEW_INDEX) {
+        this.props.onSwipeNext && this.props.onSwipeNext(newMoment);
+      }
+    }, 100);
   }
 
   onWeekRowLayout = (event) => {
