@@ -53,7 +53,7 @@ export default class Day extends Component {
   }
 
   dayTextStyle = (isWeekend, isSelected, isToday, event) => {
-    const { customStyle } = this.props;
+    const { customStyle, isInCurrentMonth } = this.props;
     const dayTextStyle = [styles.day, customStyle.day];
 
     if (isToday && !isSelected) {
@@ -67,6 +67,11 @@ export default class Day extends Component {
     if (event) {
       dayTextStyle.push(styles.hasEventText, customStyle.hasEventText, event.hasEventText)
     }
+
+    if (!isInCurrentMonth) {
+      dayTextStyle.push(customStyle.notInMonthText);
+    }
+
     return dayTextStyle;
   }
 

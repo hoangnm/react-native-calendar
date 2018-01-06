@@ -266,14 +266,15 @@ export default class Calendar extends Component {
       const dayIndex = renderIndex - offset;
       const isoWeekday = (renderIndex + weekStart) % 7;
       const thisMoment = moment(startOfArgMoment).add(dayIndex, 'day');
-      const isInSameMonth = this.state.currentMoment.isSame(thisMoment, 'month');
+      const isInCurrentMonth = this.state.currentMoment.isSame(thisMoment, 'month');
 
-      if (dayIndex >= 0 && dayIndex < argDaysCount && isInSameMonth) {
+      if (dayIndex >= 0 && dayIndex < argDaysCount) {
         days.push((
           this.renderDay({
             startOfMonth: startOfArgMoment,
             isWeekend: isoWeekday === 0 || isoWeekday === 6,
             key: renderIndex,
+            isInCurrentMonth,
             onPress: () => {
               this.selectDate(thisMoment);
               this.props.onDateSelect && this.props.onDateSelect(thisMoment ? thisMoment.format() : null);
