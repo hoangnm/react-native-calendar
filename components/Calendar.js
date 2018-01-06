@@ -266,8 +266,9 @@ export default class Calendar extends Component {
       const dayIndex = renderIndex - offset;
       const isoWeekday = (renderIndex + weekStart) % 7;
       const thisMoment = moment(startOfArgMoment).add(dayIndex, 'day');
+      const isInSameMonth = this.state.currentMoment.isSame(thisMoment, 'month');
 
-      if (dayIndex >= 0 && dayIndex < argDaysCount) {
+      if (dayIndex >= 0 && dayIndex < argDaysCount && isInSameMonth) {
         days.push((
           this.renderDay({
             startOfMonth: startOfArgMoment,
