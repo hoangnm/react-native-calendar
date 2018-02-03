@@ -107,7 +107,7 @@ export default class Calendar extends Component {
       const nextState = {};
       nextState.selectedMoment = nextProps.selectedDate;
       const mSelectedDate = moment(nextProps.selectedDate);
-      if (!mSelectedDate.isSame(this.setState.currentMoment, 'month')) {
+      if (!mSelectedDate.isSame(this.state.currentMoment, 'month')) {
         nextState.currentMoment = moment(nextProps.selectedDate);
       }
       this.setState(nextState);
