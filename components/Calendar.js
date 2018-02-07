@@ -107,7 +107,7 @@ export default class Calendar extends Component {
       const nextState = {};
       nextState.selectedMoment = nextProps.selectedDate;
       const mSelectedDate = moment(nextProps.selectedDate);
-      if (!mSelectedDate.isSame(this.state.currentMoment, 'month')) {
+      if (!mSelectedDate.isBetween(this.state.currentMoment, 'month')) {
         nextState.currentMoment = moment(nextProps.selectedDate);
       }
       this.setState(nextState);
@@ -291,7 +291,7 @@ export default class Calendar extends Component {
             },
             caption: thisMoment.format('D'),
             isToday: todayMoment.format('YYYY-MM-DD') === thisMoment.format('YYYY-MM-DD'),
-            isSelected: selectedMoment.isSame(thisMoment),
+            isSelected: selectedMoment.isSame(thisMoment, 'day'),
             event: eventsMap[thisMoment.format('YYYY-MM-DD')] ||
             eventsMap[thisMoment.format('YYYYMMDD')],
             showEventIndicators: this.props.showEventIndicators,
